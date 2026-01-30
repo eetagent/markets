@@ -5,6 +5,15 @@ The Markets application delivers financial data to your fingertips. Track stocks
 
 ## Screenshots
 
+
+<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/9091c812-e8c6-4ed1-b5d1-1bbba9dd697b" />
+
+<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/0f1c26bd-ff94-4bf1-9c51-8c11dca47800" />
+
+<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/f156ba3b-7fbb-4c6e-9802-93a0503ee92b" />
+
+<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/89b0891e-5490-4364-b30e-fdfd9825bad2" />
+
 ![](preview.png?raw=true)
 
 ## Features
