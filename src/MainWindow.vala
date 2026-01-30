@@ -126,6 +126,16 @@ public class Markets.MainWindow : Adw.ApplicationWindow {
         });
         this.add_action (edit_action);
         this.application.set_accels_for_action ("win.edit", {"<Control>E"});
+
+        // Ctrl+O - Open current stock in Yahoo Finance
+        var open_yahoo_action = new SimpleAction ("open-yahoo", null);
+        open_yahoo_action.activate.connect (() => {
+            if (this.state.chart_symbol != null) {
+                this.state.link = this.state.chart_symbol.link;
+            }
+        });
+        this.add_action (open_yahoo_action);
+        this.application.set_accels_for_action ("win.open-yahoo", {"<Control>O"});
     }
 
     [GtkCallback]
