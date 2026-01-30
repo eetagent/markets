@@ -7,6 +7,9 @@ public class Markets.ChartHeaderBar : Gtk.Widget {
     private unowned Gtk.Button back_button;
 
     [GtkChild]
+    private unowned Gtk.Button yahoo_button;
+
+    [GtkChild]
     private unowned Adw.WindowTitle title_widget;
 
     public ChartHeaderBar (MainWindow window, State state) {
@@ -27,5 +30,12 @@ public class Markets.ChartHeaderBar : Gtk.Widget {
     [GtkCallback]
     private void on_back_clicked () {
         this.state.chart_symbol = null;
+    }
+
+    [GtkCallback]
+    private void on_yahoo_clicked () {
+        if (this.state.chart_symbol != null) {
+            this.state.link = this.state.chart_symbol.link;
+        }
     }
 }

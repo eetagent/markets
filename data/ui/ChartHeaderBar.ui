@@ -18,6 +18,14 @@
             <signal name="clicked" handler="on_back_clicked" swapped="no"/>
           </object>
         </child>
+        <child type="end">
+          <object class="GtkButton" id="yahoo_button">
+            <property name="valign">center</property>
+            <property name="icon_name">web-browser-symbolic</property>
+            <property name="tooltip_text" translatable="yes">Open in Yahoo Finance</property>
+            <signal name="clicked" handler="on_yahoo_clicked" swapped="no"/>
+          </object>
+        </child>
       </object>
     </child>
   </template>
