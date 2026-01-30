@@ -47,6 +47,50 @@ public class Markets.Symbol : Object {
         get; set; default = 0;
     }
 
+    public double regular_market_open {
+        get; set; default = 0;
+    }
+
+    public double regular_market_day_high {
+        get; set; default = 0;
+    }
+
+    public double regular_market_day_low {
+        get; set; default = 0;
+    }
+
+    public int64 regular_market_volume {
+        get; set; default = 0;
+    }
+
+    public double trailing_pe {
+        get; set; default = 0;
+    }
+
+    public int64 market_cap {
+        get; set; default = 0;
+    }
+
+    public double fifty_two_week_high {
+        get; set; default = 0;
+    }
+
+    public double fifty_two_week_low {
+        get; set; default = 0;
+    }
+
+    public double dividend_yield {
+        get; set; default = 0;
+    }
+
+    public double beta {
+        get; set; default = 0;
+    }
+
+    public double eps {
+        get; set; default = 0;
+    }
+
     public bool is_marked_closed {
         get {
             return this.market_state.down () != "regular";
@@ -155,6 +199,40 @@ public class Markets.Symbol : Object {
             this.regular_market_change_percent =
                 json.get_double_member ("regularMarketChangePercent");
         }
+
+        if (json.has_member ("regularMarketOpen")) {
+            this.regular_market_open = json.get_double_member ("regularMarketOpen");
+        }
+        if (json.has_member ("regularMarketDayHigh")) {
+            this.regular_market_day_high = json.get_double_member ("regularMarketDayHigh");
+        }
+        if (json.has_member ("regularMarketDayLow")) {
+            this.regular_market_day_low = json.get_double_member ("regularMarketDayLow");
+        }
+        if (json.has_member ("regularMarketVolume")) {
+            this.regular_market_volume = json.get_int_member ("regularMarketVolume");
+        }
+        if (json.has_member ("trailingPE")) {
+            this.trailing_pe = json.get_double_member ("trailingPE");
+        }
+        if (json.has_member ("marketCap")) {
+            this.market_cap = json.get_int_member ("marketCap");
+        }
+        if (json.has_member ("fiftyTwoWeekHigh")) {
+            this.fifty_two_week_high = json.get_double_member ("fiftyTwoWeekHigh");
+        }
+        if (json.has_member ("fiftyTwoWeekLow")) {
+            this.fifty_two_week_low = json.get_double_member ("fiftyTwoWeekLow");
+        }
+        if (json.has_member ("dividendYield")) {
+            this.dividend_yield = json.get_double_member ("dividendYield");
+        }
+        if (json.has_member ("beta")) {
+            this.beta = json.get_double_member ("beta");
+        }
+        if (json.has_member ("epsTrailingTwelveMonths")) {
+            this.eps = json.get_double_member ("epsTrailingTwelveMonths");
+        }
     }
 
     public void build_json (Json.Builder builder) {
@@ -194,6 +272,39 @@ public class Markets.Symbol : Object {
 
         builder.set_member_name ("regularMarketChangePercent");
         builder.add_double_value (this.regular_market_change_percent);
+
+        builder.set_member_name ("regularMarketOpen");
+        builder.add_double_value (this.regular_market_open);
+
+        builder.set_member_name ("regularMarketDayHigh");
+        builder.add_double_value (this.regular_market_day_high);
+
+        builder.set_member_name ("regularMarketDayLow");
+        builder.add_double_value (this.regular_market_day_low);
+
+        builder.set_member_name ("regularMarketVolume");
+        builder.add_int_value (this.regular_market_volume);
+
+        builder.set_member_name ("trailingPE");
+        builder.add_double_value (this.trailing_pe);
+
+        builder.set_member_name ("marketCap");
+        builder.add_int_value (this.market_cap);
+
+        builder.set_member_name ("fiftyTwoWeekHigh");
+        builder.add_double_value (this.fifty_two_week_high);
+
+        builder.set_member_name ("fiftyTwoWeekLow");
+        builder.add_double_value (this.fifty_two_week_low);
+
+        builder.set_member_name ("dividendYield");
+        builder.add_double_value (this.dividend_yield);
+
+        builder.set_member_name ("beta");
+        builder.add_double_value (this.beta);
+
+        builder.set_member_name ("epsTrailingTwelveMonths");
+        builder.add_double_value (this.eps);
 
         builder.end_object ();
     }

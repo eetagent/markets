@@ -2,6 +2,9 @@ app_sources = [
   'Application.vala',
   'NewSymbolDialog.vala',
   'PreferencesWindow.vala',
+  'ChartView.vala',
+  'ChartHeaderBar.vala',
+  'ChartData.vala',
   'SymbolsView.vala',
   'NoSymbolsView.vala',
   'SymbolRow.vala',
@@ -22,7 +25,8 @@ app_deps = [
   dependency('libadwaita-1', version: '>= 1.0.0'),
   dependency('libsoup-3.0', version: '>= 3.0'),
   dependency('json-glib-1.0'),
-  dependency('gee-0.8')
+  dependency('gee-0.8'),
+  meson.get_compiler('c').find_library('m', required : false)
 ]
 
 app_c_args = [

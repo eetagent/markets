@@ -7,11 +7,19 @@ public class Markets.MainWindow : Adw.ApplicationWindow {
     [GtkChild]
     private unowned Gtk.Box titlebar;
 
+    [GtkChild]
+    public unowned Gtk.SearchBar search_bar;
+
+    [GtkChild]
+    private unowned Gtk.SearchEntry search_entry;
+
     private State state;
 
     private MainHeaderBar main_header_bar;
 
     private SelectionHeaderBar selection_header_bar;
+
+    private ChartHeaderBar chart_header_bar;
 
     public MainWindow (Gtk.Application app, State state) {
         Object (
@@ -27,8 +35,12 @@ public class Markets.MainWindow : Adw.ApplicationWindow {
         this.selection_header_bar = new SelectionHeaderBar (this, state);
         this.selection_header_bar.visible = false;
 
+        this.chart_header_bar = new ChartHeaderBar (this, state);
+        this.chart_header_bar.visible = false;
+
         this.titlebar.append (this.main_header_bar);
         this.titlebar.append (this.selection_header_bar);
+        this.titlebar.append (this.chart_header_bar);
 
         var symbols_view = new SymbolsView (this.state);
         stack.add_named (symbols_view, "symbols_view");
@@ -36,12 +48,118 @@ public class Markets.MainWindow : Adw.ApplicationWindow {
         var no_symbols_view = new NoSymbolsView ();
         stack.add_named (no_symbols_view, "no_symbols_view");
 
+        var chart_view = new ChartView (this.state);
+        stack.add_named (chart_view, "chart_view");
+
         this.close_request.connect (this.on_quit);
         this.state.notify["view-mode"].connect (this.on_selection_mode_update);
         this.state.notify["symbols"].connect (this.on_symbols_updated);
+        this.state.notify["chart-symbol"].connect (this.on_chart_symbol_updated);
         this.on_symbols_updated ();
 
         this.set_default_size (this.state.window_width, this.state.window_height);
+
+        // Setup search
+        this.search_bar.connect_entry (this.search_entry);
+        this.search_bar.set_key_capture_widget (this);
+        
+        // Listen for search toggle from headerbar
+        this.state.notify["filter-query"].connect (this.on_filter_query_updated);
+
+        // Setup keyboard shortcuts using actions
+        this.setup_actions ();
+    }
+
+    private void setup_actions () {
+        // Escape - Close search bar or chart view
+        var escape_action = new SimpleAction ("escape", null);
+        escape_action.activate.connect (() => {
+            // First priority: close search bar if open
+            if (this.search_bar.search_mode_enabled) {
+                this.search_bar.search_mode_enabled = false;
+            }
+            // Second priority: close chart view if open
+            else if (this.state.chart_symbol != null) {
+                this.state.chart_symbol = null;
+            }
+        });
+        this.add_action (escape_action);
+        this.application.set_accels_for_action ("win.escape", {"Escape"});
+
+        // Ctrl+R - Reload/Refresh
+        var refresh_action = new SimpleAction ("refresh", null);
+        refresh_action.activate.connect (() => {
+            if (this.state.chart_symbol == null && this.state.symbols.size > 0) {
+                this.state.notify_property ("symbols");
+            }
+        });
+        this.add_action (refresh_action);
+        this.application.set_accels_for_action ("win.refresh", {"<Control>R"});
+
+        // Ctrl+F - Toggle search
+        var search_action = new SimpleAction ("search", null);
+        search_action.activate.connect (() => {
+            if (this.state.chart_symbol == null && this.state.symbols.size > 0 && this.state.view_mode == State.ViewMode.PRESENTATION) {
+                this.search_bar.search_mode_enabled = !this.search_bar.search_mode_enabled;
+            }
+        });
+        this.add_action (search_action);
+        this.application.set_accels_for_action ("win.search", {"<Control>F"});
+
+        // Ctrl+A - Add symbol
+        var add_action = new SimpleAction ("add", null);
+        add_action.activate.connect (() => {
+            if (this.state.chart_symbol == null) {
+                var dialog = new NewSymbolDialog (this, this.state);
+                dialog.present ();
+            }
+        });
+        this.add_action (add_action);
+        this.application.set_accels_for_action ("win.add", {"<Control>A"});
+
+        // Ctrl+E - Enter selection mode
+        var edit_action = new SimpleAction ("edit", null);
+        edit_action.activate.connect (() => {
+            if (this.state.chart_symbol == null && this.state.symbols.size > 0 && this.state.view_mode == State.ViewMode.PRESENTATION) {
+                this.state.view_mode = State.ViewMode.SELECTION;
+            }
+        });
+        this.add_action (edit_action);
+        this.application.set_accels_for_action ("win.edit", {"<Control>E"});
+    }
+
+    [GtkCallback]
+    private void on_search_changed (Gtk.SearchEntry entry) {
+        this.state.filter_query = entry.text;
+    }
+
+    [GtkCallback]
+    private void on_search_stopped (Gtk.SearchEntry entry) {
+        this.search_bar.search_mode_enabled = false;
+        this.state.filter_query = "";
+        // Sync button state
+        this.main_header_bar.search_button.active = false;
+    }
+
+    private void on_filter_query_updated () {
+        // If filter query is changed externally (e.g. cleared), update entry if needed
+        if (this.state.filter_query != this.search_entry.text) {
+            this.search_entry.text = this.state.filter_query;
+        }
+    }
+
+    private void on_chart_symbol_updated () {
+        if (this.state.chart_symbol != null) {
+            this.stack.set_visible_child_name ("chart_view");
+            this.main_header_bar.visible = false;
+            this.selection_header_bar.visible = false;
+            this.chart_header_bar.visible = true;
+        } else {
+            // Revert to normal view
+            this.chart_header_bar.visible = false;
+            this.on_selection_mode_update (); // Restore correct header bar
+            this.on_symbols_updated (); // Restore correct list view
+        }
     }
 
     private bool on_quit () {

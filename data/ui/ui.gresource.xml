@@ -4,6 +4,8 @@
     <file compressed="true">Application.css</file>
     <file compressed="true">MainWindow.ui</file>
     <file compressed="true">PreferencesWindow.ui</file>
+    <file compressed="true">ChartView.ui</file>
+    <file compressed="true">ChartHeaderBar.ui</file>
     <file compressed="true">NoSymbolsView.ui</file>
     <file compressed="true">NewSymbolDialog.ui</file>
     <file compressed="true">SymbolRow.ui</file>

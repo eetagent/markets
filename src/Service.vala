@@ -161,7 +161,18 @@ namespace Markets {
                 "regularMarketPrice",
                 "regularMarketChange",
                 "regularMarketChangePercent",
-                "regularMarketTime"
+                "regularMarketTime",
+                "regularMarketOpen",
+                "regularMarketDayHigh",
+                "regularMarketDayLow",
+                "regularMarketVolume",
+                "trailingPE",
+                "marketCap",
+                "fiftyTwoWeekHigh",
+                "fiftyTwoWeekLow",
+                "dividendYield",
+                "beta",
+                "epsTrailingTwelveMonths"
             );
             fields = GLib.Uri.escape_string (fields, ",", false);
 

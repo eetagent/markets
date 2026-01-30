@@ -11,14 +11,32 @@ public class Markets.SymbolsView : Gtk.Widget {
         this.set_layout_manager (new Gtk.BinLayout ());
 
         this.state.notify["symbols"].connect (this.on_symbols_update);
+        this.state.notify["filter-query"].connect (this.on_filter_query_changed);
         this.on_symbols_update ();
+        
+        this.symbols.set_filter_func (this.filter_func);
+    }
+
+    private void on_filter_query_changed () {
+        this.symbols.invalidate_filter ();
+    }
+
+    private bool filter_func (Gtk.ListBoxRow row) {
+        if (this.state.filter_query == "") return true;
+        
+        var symbol_row = row as SymbolRow;
+        if (symbol_row == null) return true;
+        
+        var s = symbol_row.symbol;
+        var query = this.state.filter_query.down ();
+        
+        return s.name.down ().contains (query) || s.id.down ().contains (query);
     }
 
     [GtkCallback]
     private void on_row_click (Gtk.ListBox box, Gtk.ListBoxRow row) {
-        var child = row.get_child ();
-        if (child is SymbolRow) {
-            ((SymbolRow) child).on_row_clicked ();
+        if (row is SymbolRow) {
+            ((SymbolRow) row).on_row_clicked ();
         }
     }
 

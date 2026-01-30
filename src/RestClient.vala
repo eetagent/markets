@@ -89,5 +89,11 @@ namespace Markets {
                 return new Json.Node (Json.NodeType.NULL);
             }
         }
+
+        public async Json.Node fetch_chart (string symbol, string range, string interval) {
+            // Note: We don't append crumb here because fetch() handles it
+            string url = @"https://query1.finance.yahoo.com/v8/finance/chart/$symbol?range=$range&interval=$interval";
+            return yield this.fetch (url);
+        }
     }
 }

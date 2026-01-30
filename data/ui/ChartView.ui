@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MarketsChartView" parent="GtkWidget">
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <property name="margin-top">10</property>
+        <property name="margin-bottom">10</property>
+        <property name="margin-start">10</property>
+        <property name="margin-end">10</property>
+        
+        <child>
+            <object class="GtkBox">
+                <property name="halign">center</property>
+                <style>
+                    <class name="linked"/>
+                </style>
+                <child>
+                    <object class="GtkToggleButton" id="range_1d">
+                        <property name="label">1D</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_1w">
+                        <property name="label">1W</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_1m">
+                        <property name="label">1M</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_3m">
+                        <property name="label">3M</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_ytd">
+                        <property name="label">YTD</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_1y">
+                        <property name="label">1Y</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_2y">
+                        <property name="label">2Y</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_5y">
+                        <property name="label">5Y</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_10y">
+                        <property name="label">10Y</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkToggleButton" id="range_max">
+                        <property name="label">Max</property>
+                        <property name="group">range_1d</property>
+                        <signal name="toggled" handler="on_range_toggled"/>
+                    </object>
+                </child>
+            </object>
+        </child>
+
+    <child>
+      <object class="GtkDrawingArea" id="chart_area">
+        <property name="vexpand">True</property>
+        <property name="hexpand">True</property>
+      </object>
+    </child>
+
+    <child>
+        <object class="GtkGrid">
+            <property name="column-spacing">20</property>
+            <property name="row-spacing">10</property>
+            <property name="margin-bottom">20</property>
+            <property name="halign">center</property>
+            
+            <!-- Row 0 -->
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Open</property><style><class name="dim-label"/></style><layout><property name="column">0</property><property name="row">0</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_open"><property name="label">-</property><property name="halign">end</property><layout><property name="column">1</property><property name="row">0</property></layout></object>
+            </child>
+            
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">High</property><style><class name="dim-label"/></style><layout><property name="column">2</property><property name="row">0</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_high"><property name="label">-</property><property name="halign">end</property><layout><property name="column">3</property><property name="row">0</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Low</property><style><class name="dim-label"/></style><layout><property name="column">4</property><property name="row">0</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_low"><property name="label">-</property><property name="halign">end</property><layout><property name="column">5</property><property name="row">0</property></layout></object>
+            </child>
+
+            <!-- Row 1 -->
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Vol</property><style><class name="dim-label"/></style><layout><property name="column">0</property><property name="row">1</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_vol"><property name="label">-</property><property name="halign">end</property><layout><property name="column">1</property><property name="row">1</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">P/E</property><style><class name="dim-label"/></style><layout><property name="column">2</property><property name="row">1</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_pe"><property name="label">-</property><property name="halign">end</property><layout><property name="column">3</property><property name="row">1</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Mkt Cap</property><style><class name="dim-label"/></style><layout><property name="column">4</property><property name="row">1</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_mkt_cap"><property name="label">-</property><property name="halign">end</property><layout><property name="column">5</property><property name="row">1</property></layout></object>
+            </child>
+
+            <!-- Row 2 -->
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">52W H</property><style><class name="dim-label"/></style><layout><property name="column">0</property><property name="row">2</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_52w_h"><property name="label">-</property><property name="halign">end</property><layout><property name="column">1</property><property name="row">2</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">52W L</property><style><class name="dim-label"/></style><layout><property name="column">2</property><property name="row">2</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_52w_l"><property name="label">-</property><property name="halign">end</property><layout><property name="column">3</property><property name="row">2</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Yield</property><style><class name="dim-label"/></style><layout><property name="column">4</property><property name="row">2</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_yield"><property name="label">-</property><property name="halign">end</property><layout><property name="column">5</property><property name="row">2</property></layout></object>
+            </child>
+
+            <!-- Row 3 -->
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">Beta</property><style><class name="dim-label"/></style><layout><property name="column">0</property><property name="row">3</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_beta"><property name="label">-</property><property name="halign">end</property><layout><property name="column">1</property><property name="row">3</property></layout></object>
+            </child>
+
+            <child>
+                <object class="GtkLabel"><property name="label" translatable="yes">EPS</property><style><class name="dim-label"/></style><layout><property name="column">2</property><property name="row">3</property></layout></object>
+            </child>
+            <child>
+                <object class="GtkLabel" id="val_eps"><property name="label">-</property><property name="halign">end</property><layout><property name="column">3</property><property name="row">3</property></layout></object>
+            </child>
+        </object>
+    </child>
+    
+    <child>
+        <object class="GtkLabel" id="status_label">
+                <property name="label"></property>
+                <style>
+                    <class name="dim-label"/>
+                </style>
+            </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

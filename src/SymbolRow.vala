@@ -36,7 +36,9 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
 
     private State state;
 
-    private Symbol symbol;
+    public Symbol symbol {
+        get; private set;
+    }
 
     public SymbolRow (Symbol symbol, State state) {
         this.symbol = symbol;
@@ -156,7 +158,7 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
 
     public void on_row_clicked () {
         if (this.state.view_mode == State.ViewMode.PRESENTATION) {
-            this.state.link = this.symbol.link;
+            this.state.chart_symbol = this.symbol;
         }
     }
 }

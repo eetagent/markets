@@ -16,15 +16,6 @@ public class Markets.SelectionHeaderBar : Gtk.Widget {
         this.state.notify["has-selected"].connect (this.on_has_selected_updated);
 
         this.on_has_selected_updated ();
-
-        var controller = new Gtk.ShortcutController ();
-        var trigger = Gtk.ShortcutTrigger.parse_string ("Escape");
-        var action = new Gtk.CallbackAction ((widget, args) => {
-            this.on_cancel_clicked ();
-            return true;
-        });
-        controller.add_shortcut (new Gtk.Shortcut (trigger, action));
-        this.add_controller (controller);
     }
 
     [GtkCallback]

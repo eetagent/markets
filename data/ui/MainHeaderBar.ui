@@ -33,6 +33,13 @@
           </object>
         </child>
         <child type="start">
+          <object class="GtkToggleButton" id="search_button">
+            <property name="valign">center</property>
+            <signal name="toggled" handler="on_search_toggled" swapped="no"/>
+            <property name="icon_name">system-search-symbolic</property>
+          </object>
+        </child>
+        <child type="start">
           <object class="GtkButton">
             <property name="valign">center</property>
             <signal name="clicked" handler="on_select_clicked" swapped="no"/>
@@ -47,6 +54,13 @@
             <style>
               <class name="image-button"/>
             </style>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkButton" id="refresh_button">
+            <property name="valign">center</property>
+            <signal name="clicked" handler="on_refresh_clicked" swapped="no"/>
+            <property name="icon_name">view-refresh-symbolic</property>
           </object>
         </child>
         <child type="end">

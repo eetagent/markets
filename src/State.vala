@@ -29,6 +29,10 @@ public class Markets.State : Object {
         get; set; default = "";
     }
 
+    public string filter_query {
+        get; set; default = "";
+    }
+
     public int pull_interval {
         get; set;
     }
@@ -50,6 +54,10 @@ public class Markets.State : Object {
     }
 
     public string link {
+        get; set;
+    }
+
+    public Symbol ? chart_symbol {
         get; set;
     }
 
