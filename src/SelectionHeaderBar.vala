@@ -1,28 +1,30 @@
 [GtkTemplate (ui = "/biz/zaxo/Markets/SelectionHeaderBar.ui")]
-public class Markets.SelectionHeaderBar : Hdy.HeaderBar {
+public class Markets.SelectionHeaderBar : Gtk.Widget {
 
     [GtkChild]
-    private Gtk.Button delete_button;
+    private unowned Gtk.Button delete_button;
 
     [GtkChild]
-    private Gtk.Button cancel_button;
+    private unowned Gtk.Button cancel_button;
 
     private State state;
 
     public SelectionHeaderBar (MainWindow window, State state) {
         this.state = state;
+        this.set_layout_manager (new Gtk.BinLayout ());
 
         this.state.notify["has-selected"].connect (this.on_has_selected_updated);
 
         this.on_has_selected_updated ();
 
-        this.cancel_button.add_accelerator (
-            "clicked",
-            window.accel_group,
-            Gdk.Key.Escape,
-            0,
-            Gtk.AccelFlags.VISIBLE
-        );
+        var controller = new Gtk.ShortcutController ();
+        var trigger = Gtk.ShortcutTrigger.parse_string ("Escape");
+        var action = new Gtk.CallbackAction ((widget, args) => {
+            this.on_cancel_clicked ();
+            return true;
+        });
+        controller.add_shortcut (new Gtk.Shortcut (trigger, action));
+        this.add_controller (controller);
     }
 
     [GtkCallback]

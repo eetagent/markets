@@ -26,8 +26,8 @@ public class Markets.Application : Gtk.Application {
 
         var provider = new Gtk.CssProvider ();
         provider.load_from_resource ("/biz/zaxo/Markets/Application.css");
-        Gtk.StyleContext.add_provider_for_screen (
-            Gdk.Screen.get_default (),
+        Gtk.StyleContext.add_provider_for_display (
+            Gdk.Display.get_default (),
             provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
         );
@@ -65,24 +65,22 @@ public class Markets.Application : Gtk.Application {
     }
 
     private void on_about () {
-        var dialog = new Gtk.AboutDialog ();
+        var dialog = new Adw.AboutWindow ();
 
-        dialog.set_destroy_with_parent (true);
-        dialog.set_transient_for (window);
-        dialog.set_modal (true);
-        dialog.logo_icon_name = Constants.APP_ID;
-        dialog.program_name = _("Markets");
+        dialog.destroy_with_parent = true;
+        dialog.transient_for = window;
+        dialog.modal = true;
+        dialog.application_icon = Constants.APP_ID;
+        dialog.application_name = _("Markets");
         dialog.comments = _("Keep track of your investments");
-        dialog.authors = { "Tomasz Oponowicz" };
+        dialog.developers = { "Tomasz Oponowicz" };
         // TRANSLATORS: 'Name <email@domain.com>' or 'Name https://website.example'
         dialog.translator_credits = _("translator-credits");
         dialog.artists = {"Tobias Bernard"};
         dialog.license_type = Gtk.License.GPL_3_0;
         dialog.website = "https://github.com/tomasz-oponowicz/markets";
-        dialog.website_label = _("Official webpage");
 
-        dialog.run ();
-        dialog.destroy ();
+        dialog.present ();
     }
 
     private void on_selection_all () {
@@ -107,7 +105,7 @@ public class Markets.Application : Gtk.Application {
         Intl.textdomain (Constants.APP_ID);
 
         var app = new Application ();
-        app.startup.connect (() => { Hdy.init (); });
+        app.startup.connect (() => { Adw.init (); });
         return app.run (args);
     }
 }

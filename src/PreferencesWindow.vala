@@ -1,11 +1,11 @@
 [GtkTemplate (ui = "/biz/zaxo/Markets/PreferencesWindow.ui")]
-public class Markets.PreferencesWindow : Hdy.PreferencesWindow {
+public class Markets.PreferencesWindow : Adw.PreferencesWindow {
 
     [GtkChild]
-    private Gtk.ComboBoxText pull_interval;
+    private unowned Gtk.ComboBoxText pull_interval;
 
     [GtkChild]
-    private Gtk.Switch dark_theme;
+    private unowned Gtk.Switch dark_theme;
 
     private State state;
 

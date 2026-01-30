@@ -1,88 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <requires lib="libhandy" version="1.0"/>
-  <template class="MarketsMainHeaderBar" parent="HdyHeaderBar">
-    <property name="visible">True</property>
-    <property name="show_close_button">True</property>
-    <property name="title" translatable="yes">Markets</property>
-    <child>
-      <object class="GtkButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="valign">center</property>
-        <signal name="clicked" handler="on_add_clicked" swapped="no"/>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="icon_name">list-add-symbolic</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="pack_type">start</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="valign">center</property>
-        <signal name="clicked" handler="on_select_clicked" swapped="no"/>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="icon_name">object-select-symbolic</property>
-          </object>
-        </child>
-      </object>
-      <packing>
-        <property name="pack_type">start</property>
-        <property name="position">2</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkMenuButton" id="menu_button">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
-        <property name="valign">center</property>
-        <property name="menu_model">primary_menu</property>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="icon_name">open-menu-symbolic</property>
-            <property name="icon_size">1</property>
-          </object>
-        </child>
-        <style>
-          <class name="image-button"/>
-        </style>
-      </object>
-      <packing>
-        <property name="pack_type">end</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkSpinner" id="spinner">
-        <property name="visible">False</property>
-        <property name="active">True</property>
-        <property name="can_focus">False</property>
-      </object>
-      <packing>
-        <property name="pack_type">end</property>
-        <property name="position">5</property>
-      </packing>
-    </child>
-  </template>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
   <menu id="primary_menu">
     <section>
       <item>
@@ -97,4 +16,46 @@
       </item>
     </section>
   </menu>
+  <template class="MarketsMainHeaderBar" parent="GtkWidget">
+    <child>
+      <object class="AdwHeaderBar">
+        <property name="show_end_title_buttons">True</property>
+        <property name="title_widget">
+          <object class="AdwWindowTitle">
+            <property name="title" translatable="yes">Markets</property>
+          </object>
+        </property>
+        <child type="start">
+          <object class="GtkButton">
+            <property name="valign">center</property>
+            <signal name="clicked" handler="on_add_clicked" swapped="no"/>
+            <property name="icon_name">list-add-symbolic</property>
+          </object>
+        </child>
+        <child type="start">
+          <object class="GtkButton">
+            <property name="valign">center</property>
+            <signal name="clicked" handler="on_select_clicked" swapped="no"/>
+            <property name="icon_name">object-select-symbolic</property>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkMenuButton" id="menu_button">
+            <property name="valign">center</property>
+            <property name="menu_model">primary_menu</property>
+            <property name="icon_name">open-menu-symbolic</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkSpinner" id="spinner">
+            <property name="visible">False</property>
+            <property name="spinning">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
 </interface>

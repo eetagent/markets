@@ -1,135 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <requires lib="libhandy" version="1.0"/>
-  <template class="MarketsSelectionHeaderBar" parent="HdyHeaderBar">
-    <property name="visible">True</property>
-    <property name="show_close_button">False</property>
-    <style>
-      <class name="selection-mode"/>
-    </style>
-    <child type="title">
-      <object class="GtkMenuButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
-        <property name="relief">none</property>
-        <property name="popover">selection_options_popover</property>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">6</property>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <menu id="selection_options_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">Select all</attribute>
+        <attribute name="action">app.selection.all</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Select none</attribute>
+        <attribute name="action">app.selection.none</attribute>
+      </item>
+    </section>
+  </menu>
+  <template class="MarketsSelectionHeaderBar" parent="GtkWidget">
+    <child>
+      <object class="AdwHeaderBar">
+        <property name="show_end_title_buttons">False</property>
+        <style>
+          <class name="selection-mode"/>
+        </style>
+        <property name="title_widget">
+          <object class="GtkMenuButton">
+            <property name="valign">center</property>
+            <property name="menu_model">selection_options_menu</property>
             <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Click on a checkbox to select</property>
-                <property name="ellipsize">middle</property>
+              <object class="AdwWindowTitle">
+                <property name="title" translatable="yes">Click on a checkbox to select</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="icon_name">pan-down-symbolic</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
+            <style>
+              <class name="flat"/>
+            </style>
+          </object>
+        </property>
+        <child type="end">
+          <object class="GtkButton" id="cancel_button">
+            <property name="label" translatable="yes">Cancel</property>
+            <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
           </object>
         </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkButton" id="cancel_button">
-        <property name="label" translatable="yes">Cancel</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <signal name="clicked" handler="on_cancel_clicked" swapped="no"/>
-      </object>
-      <packing>
-        <property name="pack_type">end</property>
-        <property name="position">3</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkButton" id="delete_button">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="sensitive">False</property>
-        <property name="receives_default">False</property>
-        <property name="valign">center</property>
-        <signal name="clicked" handler="on_delete_clicked" swapped="no"/>
-        <child>
-          <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+        <child type="start">
+          <object class="GtkButton" id="delete_button">
+            <property name="sensitive">False</property>
+            <property name="valign">center</property>
+            <signal name="clicked" handler="on_delete_clicked" swapped="no"/>
             <property name="icon_name">user-trash-symbolic</property>
           </object>
         </child>
       </object>
-      <packing>
-        <property name="pack_type">end</property>
-        <property name="position">4</property>
-      </packing>
     </child>
   </template>
-  <object class="GtkPopoverMenu" id="selection_options_popover">
-    <property name="can_focus">False</property>
-    <property name="position">bottom</property>
-    <child>
-      <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_left">5</property>
-        <property name="margin_right">5</property>
-        <property name="margin_top">5</property>
-        <property name="margin_bottom">5</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkModelButton">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.selection.all</property>
-            <property name="text" translatable="yes">Select all</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkModelButton">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="action_name">app.selection.none</property>
-            <property name="text" translatable="yes">Select none</property>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="submenu">main</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
 </interface>

@@ -2,48 +2,41 @@
 public class Markets.SymbolRow : Gtk.ListBoxRow {
 
     [GtkChild]
-    private Gtk.Label title1;
+    private unowned Gtk.Label title1;
 
     [GtkChild]
-    private Gtk.Label title2;
+    private unowned Gtk.Label title2;
 
     [GtkChild]
-    private Gtk.Label change;
+    private unowned Gtk.Label change;
 
     [GtkChild]
-    private Gtk.Label price;
+    private unowned Gtk.Label price;
 
     [GtkChild]
-    private Gtk.Label currency;
+    private unowned Gtk.Label currency;
 
     [GtkChild]
-    private Gtk.Label market;
+    private unowned Gtk.Label market;
 
     [GtkChild]
-    private Gtk.Label time;
+    private unowned Gtk.Label time;
 
     [GtkChild]
-    private Gtk.CheckButton checkbox;
+    private unowned Gtk.CheckButton checkbox;
 
     [GtkChild]
-    private Gtk.EventBox drag_handle;
+    private unowned Gtk.Image drag_icon;
 
     [GtkChild]
-    private Gtk.Image drag_icon;
+    private unowned Gtk.Box extra_info;
 
     [GtkChild]
-    private Gtk.Box extra_info;
-
-    [GtkChild]
-    private Gtk.Box price_info;
+    private unowned Gtk.Box price_info;
 
     private State state;
 
     private Symbol symbol;
-
-    private const Gtk.TargetEntry[] TARGET_ENTRIES = {
-        {"SYMBOLROW", Gtk.TargetFlags.SAME_APP, 0}
-    };
 
     public SymbolRow (Symbol symbol, State state) {
         this.symbol = symbol;
@@ -55,13 +48,50 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
         this.on_symbol_update ();
         this.on_view_mode_update ();
 
-        Gtk.drag_source_set (
-            this.drag_handle, Gdk.ModifierType.BUTTON1_MASK, TARGET_ENTRIES, Gdk.DragAction.MOVE
-        );
+        this.setup_dnd ();
+    }
 
-        Gtk.drag_dest_set (
-            this, Gtk.DestDefaults.ALL, TARGET_ENTRIES, Gdk.DragAction.MOVE
-        );
+    private void setup_dnd () {
+        // Drag Source
+        var source = new Gtk.DragSource ();
+        source.actions = Gdk.DragAction.MOVE;
+        
+        source.prepare.connect ((x, y) => {
+            var value = new GLib.Value (typeof (string));
+            value.set_string (this.symbol.id);
+            return new Gdk.ContentProvider.for_value (value);
+        });
+
+        source.drag_begin.connect ((drag) => {
+            this.add_css_class ("drag-begin");
+        });
+
+        source.drag_end.connect ((drag, delete_data) => {
+            this.remove_css_class ("drag-begin");
+        });
+
+        this.drag_icon.add_controller (source);
+
+        // Drop Target
+        var target = new Gtk.DropTarget (typeof (string), Gdk.DragAction.MOVE);
+        
+        target.drop.connect ((value, x, y) => {
+            string src_id = value.get_string ();
+            Symbol? src_symbol = null;
+            foreach (var s in this.state.symbols) {
+                if (s.id == src_id) {
+                    src_symbol = s;
+                    break;
+                }
+            }
+            if (src_symbol != null) {
+                this.state.move_symbol (src_symbol, this.symbol);
+                return true;
+            }
+            return false;
+        });
+
+        this.add_controller (target);
     }
 
     private void on_symbol_update () {
@@ -83,24 +113,22 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
                 s.regular_market_change_percent
             );
 
-        var change_style = this.change.get_style_context ();
-        change_style.remove_class ("profit");
-        change_style.remove_class ("loss");
+        this.change.remove_css_class ("profit");
+        this.change.remove_css_class ("loss");
         if (s.regular_market_change >= 0) {
-            change_style.add_class ("profit");
+            this.change.add_css_class ("profit");
         } else {
-            change_style.add_class ("loss");
+            this.change.add_css_class ("loss");
         }
 
-        var market_style = this.market.get_style_context ();
-        market_style.remove_class ("open");
-        market_style.remove_class ("dim-label");
+        this.market.remove_css_class ("open");
+        this.market.remove_css_class ("dim-label");
         if (s.is_marked_closed) {
             this.market.label = _("Market Closed");
-            market_style.add_class ("dim-label");
+            this.market.add_css_class ("dim-label");
         } else {
             this.market.label = _("Market Open");
-            market_style.add_class ("open");
+            this.market.add_css_class ("open");
         }
 
         if (s.regular_market_time != null) {
@@ -130,43 +158,5 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
         if (this.state.view_mode == State.ViewMode.PRESENTATION) {
             this.state.link = this.symbol.link;
         }
-    }
-
-    [GtkCallback]
-    private void on_drag_begin (Gtk.Widget widget, Gdk.DragContext context) {
-        var row = ((SymbolRow) widget);
-        row.get_style_context ().add_class ("drag-begin");
-    }
-
-    [GtkCallback]
-    private void on_drag_end (Gtk.Widget widget, Gdk.DragContext context) {
-        var row = ((SymbolRow) widget);
-        row.get_style_context ().remove_class ("drag-begin");
-    }
-
-    [GtkCallback]
-    private void on_drag_data_get (
-        Gdk.DragContext ctx, Gtk.SelectionData selection_data,
-        uint info, uint time_
-    ) {
-        uchar[] data = new uchar[(sizeof (Gtk.Widget))];
-        ((Gtk.Widget[]) data)[0] = this.parent.parent;
-
-        selection_data.set (
-            Gdk.Atom.intern_static_string ("SYMBOLROW"), 32, data
-        );
-	}
-
-    [GtkCallback]
-    private void on_drag_received (
-        Gdk.DragContext context, int x, int y,
-        Gtk.SelectionData selection_data, uint target_type
-    ) {
-        var row = ((Gtk.Widget[]) selection_data.get_data ())[0];
-
-        Symbol src = ((SymbolRow) row).symbol;
-        Symbol dst = this.symbol;
-
-        this.state.move_symbol (src, dst);
     }
 }

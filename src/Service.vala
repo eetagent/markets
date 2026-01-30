@@ -34,7 +34,10 @@ namespace Markets {
 
             this.load_symbols ();
             this.on_pull_interval_updated ();
-            this.on_dark_theme_updated ();
+            
+            // Initial dark theme sync
+            var style_manager = Adw.StyleManager.get_default ();
+            style_manager.color_scheme = this.state.dark_theme ? Adw.ColorScheme.FORCE_DARK : Adw.ColorScheme.FORCE_LIGHT;
         }
 
         private void bind_setting (string setting_prop, string state_prop) {
@@ -71,7 +74,7 @@ namespace Markets {
             }
 
             try {
-                Gtk.show_uri_on_window (null, this.state.link, Gdk.CURRENT_TIME);
+                Gtk.show_uri (null, this.state.link, Gdk.CURRENT_TIME);
             } catch (Error e) {
                 warning (@"An error occured when opening the link, message: $(e.message)");
             }
@@ -81,8 +84,8 @@ namespace Markets {
         }
 
         private void on_dark_theme_updated () {
-            Gtk.Settings.get_default ().gtk_application_prefer_dark_theme =
-                this.state.dark_theme;
+            var style_manager = Adw.StyleManager.get_default ();
+            style_manager.color_scheme = this.state.dark_theme ? Adw.ColorScheme.FORCE_DARK : Adw.ColorScheme.FORCE_LIGHT;
         }
 
         private void on_pull_interval_updated () {
@@ -114,6 +117,11 @@ namespace Markets {
 
             var json = yield this.client.fetch (url);
 
+            if (json.get_node_type () == Json.NodeType.NULL) {
+                this.state.network_status = State.NetworkStatus.IDLE;
+                return;
+            }
+
             var search_results = new Gee.ArrayList<Symbol> ();
 
             var quotes = json.get_object ().get_array_member ("quotes");
@@ -138,7 +146,7 @@ namespace Markets {
                 ",",
                 this.state.get_symbol_ids ()
             );
-            ids = Soup.URI.encode (ids, ",");
+            ids = GLib.Uri.escape_string (ids, ",", false);
 
             string fields;
             fields = string.join (
@@ -155,7 +163,7 @@ namespace Markets {
                 "regularMarketChangePercent",
                 "regularMarketTime"
             );
-            fields = Soup.URI.encode (fields, ",");
+            fields = GLib.Uri.escape_string (fields, ",", false);
 
             this.state.network_status = State.NetworkStatus.IN_PROGRESS;
 
@@ -167,6 +175,11 @@ namespace Markets {
                       @"&symbols=$ids";
 
             var json = yield this.client.fetch (url);
+
+            if (json.get_node_type () == Json.NodeType.NULL) {
+                this.state.network_status = State.NetworkStatus.IDLE;
+                return;
+            }
 
             var objects = json.get_object ()
                            .get_object_member ("quoteResponse")

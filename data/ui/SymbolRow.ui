@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <requires lib="libhandy" version="1.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
   <template class="MarketsSymbolRow" parent="GtkListBoxRow">
     <property name="width_request">100</property>
     <property name="height_request">50</property>
-    <property name="visible">True</property>
-    <signal name="drag_data_received" handler="on_drag_received" object="MarketsSymbolRow" swapped="yes"/>
     <child>
       <object class="GtkBox">
-        <property name="visible">True</property>
         <child>
           <object class="GtkCheckButton" id="checkbox">
-            <property name="visible">True</property>
-            <property name="receives_default">False</property>
-            <property name="draw_indicator">True</property>
             <property name="can_focus">True</property>
             <signal name="toggled" handler="on_checkbox_toggled" swapped="no"/>
             <style>
@@ -23,27 +16,22 @@
               <class name="pd-right-sm"/>
             </style>
           </object>
-          <packing>
-            <property name="fill">True</property>
-          </packing>
         </child>
         <child>
           <object class="GtkBox">
-            <property name="visible">True</property>
             <property name="margin_start">10</property>
             <property name="margin_end">10</property>
             <property name="margin_top">10</property>
             <property name="margin_bottom">10</property>
             <property name="orientation">horizontal</property>
+            <property name="hexpand">True</property>
             <child>
               <object class="GtkBox">
                 <!-- left -->
-                <property name="visible">True</property>
                 <property name="orientation">vertical</property>
+                <property name="hexpand">True</property>
                 <child>
                   <object class="GtkLabel" id="title1">
-                    <property name="visible">True</property>
-                    <property name="label"></property>
                     <property name="single_line_mode">True</property>
                     <property name="ellipsize">end</property>
                     <property name="halign">start</property>
@@ -53,33 +41,19 @@
                       <class name="text-bold"/>
                     </style>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="title2">
-                    <property name="visible">True</property>
-                    <property name="label"></property>
                     <property name="single_line_mode">True</property>
                     <property name="ellipsize">end</property>
                     <property name="halign">start</property>
                     <property name="valign">center</property>
                   </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkBox" id="extra_info">
-                    <property name="visible">True</property>
                     <child>
                       <object class="GtkLabel" id="market">
-                        <property name="visible">True</property>
                         <property name="halign">start</property>
                         <style>
                           <class name="text-sm"/>
@@ -88,11 +62,8 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
-                        <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="label"> · </property>
-                        <attributes>
-                        </attributes>
                         <style>
                           <class name="dim-label"/>
                           <class name="text-sm"/>
@@ -101,7 +72,6 @@
                     </child>
                     <child>
                       <object class="GtkLabel" id="time">
-                        <property name="visible">True</property>
                         <property name="halign">start</property>
                         <property name="ellipsize">end</property>
                         <style>
@@ -117,69 +87,42 @@
             <child>
               <object class="GtkBox" id="price_info">
                 <!-- right -->
-                <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="visible">True</property>
                     <property name="orientation">horizontal</property>
                     <property name="margin_bottom">5</property>
                     <property name="halign">end</property>
                     <child>
                       <object class="GtkLabel" id="price">
-                        <property name="visible">True</property>
                         <property name="halign">end</property>
-                        <property name="xpad">0</property>
-                        <property name="label"></property>
                         <property name="single_line_mode">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkLabel" id="currency">
-                        <property name="visible">True</property>
                         <property name="halign">end</property>
                         <property name="margin_start">5</property>
-                        <property name="label"></property>
                       </object>
                     </child>
                   </object>
                 </child>
                 <child>
                   <object class="GtkLabel" id="change">
-                    <property name="visible">True</property>
                     <property name="halign">end</property>
-                    <property name="label"></property>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkEventBox" id="drag_handle">
-            <property name="visible">True</property>
-            <signal name="drag_begin" handler="on_drag_begin" object="MarketsSymbolRow" swapped="yes"/>
-            <signal name="drag_end" handler="on_drag_end" object="MarketsSymbolRow" swapped="yes"/>
-            <signal name="drag_data_get" handler="on_drag_data_get" object="MarketsSymbolRow" swapped="yes"/>
-            <child>
-              <object class="GtkImage" id="drag_icon">
-                <property name="visible">True</property>
-                <property name="icon-name">list-drag-handle-symbolic</property>
-                <style>
-                  <class name="pd-left-md"/>
-                  <class name="pd-right-sm"/>
-                </style>
-              </object>
-            </child>
+          <object class="GtkImage" id="drag_icon">
+            <property name="icon-name">list-drag-handle-symbolic</property>
+            <style>
+              <class name="pd-left-md"/>
+              <class name="pd-right-sm"/>
+            </style>
           </object>
         </child>
       </object>

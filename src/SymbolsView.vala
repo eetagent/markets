@@ -1,13 +1,14 @@
 [GtkTemplate (ui = "/biz/zaxo/Markets/SymbolsView.ui")]
-public class Markets.SymbolsView : Gtk.ScrolledWindow {
+public class Markets.SymbolsView : Gtk.Widget {
 
     [GtkChild]
-    private Gtk.ListBox symbols;
+    private unowned Gtk.ListBox symbols;
 
     private State state;
 
     public SymbolsView (State state) {
         this.state = state;
+        this.set_layout_manager (new Gtk.BinLayout ());
 
         this.state.notify["symbols"].connect (this.on_symbols_update);
         this.on_symbols_update ();
@@ -15,17 +16,22 @@ public class Markets.SymbolsView : Gtk.ScrolledWindow {
 
     [GtkCallback]
     private void on_row_click (Gtk.ListBox box, Gtk.ListBoxRow row) {
-        ((SymbolRow) row).on_row_clicked ();
+        var child = row.get_child ();
+        if (child is SymbolRow) {
+            ((SymbolRow) child).on_row_clicked ();
+        }
     }
 
     private void on_symbols_update () {
-        var children = this.symbols.get_children ();
-        foreach (Gtk.Widget widget in children) {
-            this.symbols.remove (widget);
+        Gtk.Widget child = this.symbols.get_first_child ();
+        while (child != null) {
+            Gtk.Widget next = child.get_next_sibling ();
+            this.symbols.remove (child);
+            child = next;
         }
 
         foreach (Symbol symbol in this.state.symbols) {
-            symbols.add (new SymbolRow (symbol, state));
+            symbols.append (new SymbolRow (symbol, state));
         }
     }
 }

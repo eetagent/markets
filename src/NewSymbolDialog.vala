@@ -1,22 +1,20 @@
 [GtkTemplate (ui = "/biz/zaxo/Markets/NewSymbolDialog.ui")]
-public class Markets.NewSymbolDialog : Gtk.Dialog {
+public class Markets.NewSymbolDialog : Adw.Window {
 
     [GtkChild]
-    private Gtk.TreeView results_view;
+    private unowned Gtk.TreeView results_view;
 
     [GtkChild]
-    private Gtk.Button save_button;
+    private unowned Gtk.Button save_button;
 
     [GtkChild]
-    private Gtk.SearchEntry search_entry;
-
-    private Gtk.AccelGroup accel_group;
+    private unowned Gtk.SearchEntry search_entry;
 
     private Markets.State state;
     private Gtk.ListStore store;
 
     public NewSymbolDialog (Gtk.Window parent, State state) {
-        Object (transient_for: parent, use_header_bar: 1);
+        Object (transient_for: parent, modal: true);
 
         this.state = state;
         this.store = new Gtk.ListStore (1, typeof (string));
@@ -30,16 +28,9 @@ public class Markets.NewSymbolDialog : Gtk.Dialog {
 
         this.state.notify["search-results"].connect (this.on_search_results_updated);
 
-        this.accel_group = new Gtk.AccelGroup();
-        this.add_accel_group(accel_group);
+        this.set_default_widget (this.save_button);
 
-        this.save_button.add_accelerator (
-            "clicked",
-            this.accel_group,
-            Gdk.Key.Return,
-            0,
-            Gtk.AccelFlags.VISIBLE
-        );
+        this.results_view.get_selection ().changed.connect (this.on_selection_changed);
     }
 
     private void on_search_results_updated () {
@@ -67,17 +58,19 @@ public class Markets.NewSymbolDialog : Gtk.Dialog {
         this.close ();
     }
 
-    [GtkCallback]
-    private void on_cursor_changed () {
-        Gtk.TreePath path;
-        Gtk.TreeViewColumn column;
+    private void on_selection_changed () {
+        Gtk.TreeModel model;
+        Gtk.TreeIter iter;
+        var selection = this.results_view.get_selection ();
 
-        results_view.get_cursor(out path, out column);
-
-        if (path != null) {
-            this.state.search_selection = path.get_indices ()[0];
-            var selection = this.results_view.get_selection ();
-            this.save_button.sensitive = selection.count_selected_rows () > 0;
+        if (selection.get_selected (out model, out iter)) {
+             Gtk.TreePath? path = model.get_path (iter);
+             if (path != null) {
+                this.state.search_selection = path.get_indices ()[0];
+                this.save_button.sensitive = true;
+             }
+        } else {
+            this.save_button.sensitive = false;
         }
     }
 
@@ -85,5 +78,6 @@ public class Markets.NewSymbolDialog : Gtk.Dialog {
     private void on_save_clicked () {
         var new_symbol = this.state.search_results[this.state.search_selection];
         this.state.add_symbol (new_symbol);
+        this.close ();
     }
 }

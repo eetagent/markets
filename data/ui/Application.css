@@ -1,9 +1,9 @@
 .profit, .open {
-  color: @success_color;
+  color: #2ec27e;
 }
 
 .loss {
-    color: @error_color;
+    color: #e01b24;
 }
 
 .text-lg {
@@ -42,4 +42,3 @@
 .pd-right-sm {
     padding-right: 10px;
 }
-

@@ -1,48 +1,50 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="3.20"/>
-  <requires lib="libhandy" version="1.0"/>
-  <template class="MarketsNoSymbolsView" parent="GtkBox">
-    <property name="visible">True</property>
-    <property name="orientation">vertical</property>
-    <property name="halign">center</property>
-    <property name="valign">center</property>
-    <property name="margin">18</property>
-    <property name="spacing">9</property>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="MarketsNoSymbolsView" parent="GtkWidget">
     <child>
-      <object class="GtkImage">
-        <property name="visible">True</property>
-        <property name="pixel_size">96</property>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="margin-start">18</property>
+        <property name="margin-end">18</property>
+        <property name="margin-top">18</property>
         <property name="margin-bottom">18</property>
-        <property name="icon_name">biz.zaxo.Markets-symbolic</property>
-        <property name="icon_size">6</property>
-        <style>
-          <class name="dim-label"/>
-        </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">No symbols</property>
-        <property name="wrap">True</property>
-        <style>
-          <class name="dim-label"/>
-        </style>
-        <property name="justify">center</property>
-        <attributes>
-          <attribute name="weight" value="bold"/>
-          <attribute name="scale" value="1.36"/>
-        </attributes>
-      </object>
-    </child>
-    <child>
-      <object class="GtkLabel">
-        <property name="visible">True</property>
-        <property name="label" translatable="yes">Press + to add one.</property>
-        <style>
-          <class name="dim-label"/>
-        </style>
+        <property name="spacing">9</property>
+        <child>
+          <object class="GtkImage">
+            <property name="pixel_size">96</property>
+            <property name="margin-bottom">18</property>
+            <property name="icon_name">biz.zaxo.Markets-symbolic</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">No symbols</property>
+            <property name="wrap">True</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+            <property name="justify">center</property>
+            <attributes>
+              <attribute name="weight" value="bold"/>
+              <attribute name="scale" value="1.36"/>
+            </attributes>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="label" translatable="yes">Press + to add one.</property>
+            <style>
+              <class name="dim-label"/>
+            </style>
+          </object>
+        </child>
       </object>
     </child>
   </template>

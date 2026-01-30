@@ -1,34 +1,26 @@
 [GtkTemplate (ui = "/biz/zaxo/Markets/MainHeaderBar.ui")]
-public class Markets.MainHeaderBar : Hdy.HeaderBar {
+public class Markets.MainHeaderBar : Gtk.Widget {
     private Markets.MainWindow window;
     private Markets.State state;
 
     [GtkChild]
-    private Gtk.MenuButton menu_button;
+    private unowned Gtk.MenuButton menu_button;
 
     [GtkChild]
-    private Gtk.Spinner spinner;
+    private unowned Gtk.Spinner spinner;
 
     public MainHeaderBar (MainWindow window, State state) {
         this.window = window;
         this.state = state;
+        this.set_layout_manager (new Gtk.BinLayout ());
 
         this.state.notify["network-status"].connect (this.on_network_status_updated);
-
-        this.menu_button.add_accelerator (
-            "clicked",
-            window.accel_group,
-            Gdk.Key.F10,
-            0,
-            Gtk.AccelFlags.VISIBLE
-        );
     }
 
     [GtkCallback]
     private void on_add_clicked () {
         var dialog = new NewSymbolDialog (this.window, this.state);
-        dialog.run ();
-        dialog.destroy ();
+        dialog.present ();
     }
 
     [GtkCallback]
