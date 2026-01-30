@@ -12,7 +12,11 @@ The Markets application delivers financial data to your fingertips. Track stocks
 * Create your personal portfolio
 * Track stocks, currencies, cryptocurrencies, commodities and indexes
 * Designed for Phosh (Librem5, PinePhone) and Gnome
-* Open any symbol in Yahoo Finance for more details
+* Open any symbol for detailed view
+* 1d, 1w, 1m, 3m, 6m, YTD, 1y, 5y, Max time ranges
+* Stock price history charts
+* Search for symbols
+* Detail view with key statistics
 * Adjust the refresh rate
 * Dark Mode
 
@@ -22,11 +26,11 @@ You'll need the following dependencies:
 
 * libsoup
 * libgee
-* libhandy
+* libadwaita
 * json-glib
 * gettext
 * glib2
-* gtk3
+* gtk4
 * meson
 * vala
 * ninja
@@ -35,7 +39,7 @@ You'll need the following dependencies:
 Clone the repository and change to the project directory
 
 ```
-https://github.com/tomasz-oponowicz/markets.git
+https://github.com/EETagent/markets.git
 cd markets
 ```
 

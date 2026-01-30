@@ -4,8 +4,8 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <developer_name translatable="no">Tomasz Oponowicz</developer_name>
-  <url type="homepage">https://github.com/tomasz-oponowicz/markets</url>
-  <url type="bugtracker">https://github.com/tomasz-oponowicz/markets/issues</url>
+  <url type="homepage">https://github.com/EETagent/markets</url>
+  <url type="bugtracker">https://github.com/EETagent/markets/issues</url>
   <launchable type="desktop-id">biz.zaxo.Markets.desktop</launchable>
   <translation type="gettext">biz.zaxo.Markets</translation>
 
@@ -29,7 +29,7 @@
 
   <screenshots>
     <screenshot type="default">
-      <image width="469" height="629">https://raw.githubusercontent.com/tomasz-oponowicz/markets/master/preview.png</image>
+      <image width="469" height="629">https://raw.githubusercontent.com/EETagent/markets/master/preview.png</image>
       <caption>Live Prices</caption>
     </screenshot>
   </screenshots>
@@ -44,6 +44,15 @@
   </requires>
 
   <releases>
+    <release version="0.9.0" date="2026-01-31">
+      <description>
+        <p>Markets 0.9.0</p>
+        <ul>
+          <li>Port to gtk4, libadwaita, libsoup3, fix yahoo fetch.</li>
+          <li>Chart view, detail view, shortcuts, searc</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.5.5" date="2023-03-03">
       <description>
         <p>Markets 0.5.5</p>

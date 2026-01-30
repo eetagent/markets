@@ -8,8 +8,8 @@
   <bug-database rdf:resource="https://github.com/tomasz-oponowicz/markets/issues" />
 
   <programming-language>Vala</programming-language>
-  <platform>GTK 3</platform>
-  <platform>Libhandy</platform>
+  <platform>GTK 4</platform>
+  <platform>Libadwaita</platform>
 
   <maintainer>
     <foaf:Person>
