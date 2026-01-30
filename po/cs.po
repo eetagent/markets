@@ -259,3 +259,51 @@ msgstr "Trh uzavřen"
 #: src/SymbolRow.vala:101
 msgid "Market Open"
 msgstr "Trh otevřen"
+
+#: data/ui/ChartHeaderBar.ui:11
+msgid "Chart"
+msgstr "Graf"
+
+#: data/ui/ChartView.ui:110
+msgid "Open"
+msgstr "Otevření"
+
+#: data/ui/ChartView.ui:117
+msgid "High"
+msgstr "Maximum"
+
+#: data/ui/ChartView.ui:124
+msgid "Low"
+msgstr "Minimum"
+
+#: data/ui/ChartView.ui:132
+msgid "Vol"
+msgstr "Objem"
+
+#: data/ui/ChartView.ui:139
+msgid "P/E"
+msgstr "P/E"
+
+#: data/ui/ChartView.ui:146
+msgid "Mkt Cap"
+msgstr "Tržní kap."
+
+#: data/ui/ChartView.ui:154
+msgid "52W H"
+msgstr "52T Max"
+
+#: data/ui/ChartView.ui:161
+msgid "52W L"
+msgstr "52T Min"
+
+#: data/ui/ChartView.ui:168
+msgid "Yield"
+msgstr "Výnos"
+
+#: data/ui/ChartView.ui:176
+msgid "Beta"
+msgstr "Beta"
+
+#: data/ui/ChartView.ui:183
+msgid "EPS"
+msgstr "EPS"
