@@ -35,6 +35,7 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
     private unowned Gtk.Box price_info;
 
     private State state;
+    private Gtk.PopoverMenu? context_menu = null;
 
     public Symbol symbol {
         get; private set;
@@ -51,6 +52,7 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
         this.on_view_mode_update ();
 
         this.setup_dnd ();
+        this.setup_context_menu ();
     }
 
     private void setup_dnd () {
@@ -94,6 +96,33 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
         });
 
         this.add_controller (target);
+    }
+
+    private void setup_context_menu () {
+        var menu = new Menu ();
+        menu.append (_("Open in Yahoo Finance"), "row.open-yahoo");
+
+        this.context_menu = new Gtk.PopoverMenu.from_model (menu);
+        this.context_menu.set_parent (this);
+        this.context_menu.has_arrow = false;
+
+        var action_group = new SimpleActionGroup ();
+        var open_yahoo_action = new SimpleAction ("open-yahoo", null);
+        open_yahoo_action.activate.connect (() => {
+            this.state.link = this.symbol.link;
+        });
+        action_group.add_action (open_yahoo_action);
+        this.insert_action_group ("row", action_group);
+
+        var right_click = new Gtk.GestureClick ();
+        right_click.button = Gdk.BUTTON_SECONDARY;
+        right_click.pressed.connect ((n_press, x, y) => {
+            if (this.context_menu != null) {
+                this.context_menu.set_pointing_to ({ (int)x, (int)y, 1, 1 });
+                this.context_menu.popup ();
+            }
+        });
+        this.add_controller (right_click);
     }
 
     private void on_symbol_update () {
