@@ -6,13 +6,13 @@ The Markets application delivers financial data to your fingertips. Track stocks
 ## Screenshots
 
 
-<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/9091c812-e8c6-4ed1-b5d1-1bbba9dd697b" />
+<img width="1646" height="1490" alt="obrazek" src="https://github.com/user-attachments/assets/cc8357a5-ea7a-4a53-9104-aba6a684ea72" />
 
-<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/0f1c26bd-ff94-4bf1-9c51-8c11dca47800" />
+<img width="1646" height="1490" alt="obrazek" src="https://github.com/user-attachments/assets/ad0158b3-8750-41c8-8b54-b919ac6ad11b" />
 
-<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/f156ba3b-7fbb-4c6e-9802-93a0503ee92b" />
+<img width="1646" height="1490" alt="obrazek" src="https://github.com/user-attachments/assets/4438760f-9831-443f-9ba7-96c755c32d04" />
 
-<img width="1560" height="1266" alt="obrazek" src="https://github.com/user-attachments/assets/89b0891e-5490-4364-b30e-fdfd9825bad2" />
+<img width="1646" height="1490" alt="obrazek" src="https://github.com/user-attachments/assets/de9c3514-89ba-4226-94dd-c0351b726c8f" />
 
 ![](preview.png?raw=true)
 
