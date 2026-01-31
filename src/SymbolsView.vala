@@ -12,6 +12,7 @@ public class Markets.SymbolsView : Gtk.Widget {
 
         this.state.notify["symbols"].connect (this.on_symbols_update);
         this.state.notify["filter-query"].connect (this.on_filter_query_changed);
+        this.state.notify["current-group"].connect (this.on_filter_query_changed);
         this.on_symbols_update ();
         
         this.symbols.set_filter_func (this.filter_func);
@@ -22,10 +23,14 @@ public class Markets.SymbolsView : Gtk.Widget {
     }
 
     private bool filter_func (Gtk.ListBoxRow row) {
-        if (this.state.filter_query == "") return true;
-        
         var symbol_row = row as SymbolRow;
         if (symbol_row == null) return true;
+
+        if (this.state.current_group != "" && !symbol_row.symbol.groups.contains (this.state.current_group)) {
+            return false;
+        }
+
+        if (this.state.filter_query == "") return true;
         
         var s = symbol_row.symbol;
         var query = this.state.filter_query.down ();

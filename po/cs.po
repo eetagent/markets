@@ -307,3 +307,43 @@ msgstr "Beta"
 #: data/ui/ChartView.ui:183
 msgid "EPS"
 msgstr "EPS"
+
+#: data/ui/MainHeaderBar.ui:40
+msgid "Groups"
+msgstr "Skupiny"
+
+#: src/MainWindow.vala:166
+msgid "Create Group"
+msgstr "Vytvořit skupinu"
+
+#: src/MainHeaderBar.vala:34
+msgid "Create Group..."
+msgstr "Vytvořit skupinu..."
+
+#: src/MainWindow.vala:166
+msgid "Enter the name of the new group."
+msgstr "Zadejte název nové skupiny."
+
+#: src/MainWindow.vala:164
+msgid "Group Name"
+msgstr "Název skupiny"
+
+#: src/MainWindow.vala:168
+msgid "Create"
+msgstr "Vytvořit"
+
+#: src/MainWindow.vala:193
+msgid "Delete Group"
+msgstr "Smazat skupinu"
+
+#: src/MainWindow.vala:193
+msgid "Are you sure you want to delete the group '%s'? Symbols will remain in your list."
+msgstr "Opravdu chcete smazat skupinu '%s'? Symboly zůstanou ve vašem seznamu."
+
+#: src/MainWindow.vala:195
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/SymbolRow.vala:139
+msgid "Open in Yahoo Finance"
+msgstr "Otevřít v Yahoo Finance"

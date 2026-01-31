@@ -240,6 +240,13 @@ namespace Markets {
             }
             builder.end_array ();
 
+            builder.set_member_name ("groups");
+            builder.begin_array ();
+            foreach (string group in this.state.groups) {
+                builder.add_string_value (group);
+            }
+            builder.end_array ();
+
             builder.end_object ();
 
             Json.Generator generator = new Json.Generator ();
@@ -268,6 +275,15 @@ namespace Markets {
                 }
 
                 this.state.symbols = symbols;
+
+                if (parser.get_root ().get_object ().has_member ("groups")) {
+                    var group_nodes = parser.get_root ().get_object ().get_array_member ("groups");
+                    var groups = new Gee.ArrayList<string> ();
+                    for (var i = 0; i < group_nodes.get_length (); i++) {
+                        groups.add (group_nodes.get_string_element (i));
+                    }
+                    this.state.groups = groups;
+                }
             } catch (Error e) {
                 warning ("The config file doesn't exist. Adding default symbols.");
 

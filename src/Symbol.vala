@@ -23,6 +23,10 @@ public class Markets.Symbol : Object {
         get; set; default = "closed";
     }
 
+    public Gee.ArrayList<string> groups {
+        get; set; default = new Gee.ArrayList<string> ();
+    }
+
     public int precision {
         get; set; default = 2;
     }
@@ -175,6 +179,19 @@ public class Markets.Symbol : Object {
             this.market_state = json.get_string_member ("marketState");
         }
 
+        if (json.has_member ("groups")) {
+            var group_nodes = json.get_array_member ("groups");
+            var groups = new Gee.ArrayList<string> ();
+            for (var i = 0; i < group_nodes.get_length (); i++) {
+                groups.add (group_nodes.get_string_element (i));
+            }
+            this.groups = groups;
+        } else if (json.has_member ("group")) {
+            this.groups = new Gee.ArrayList<string> ();
+            var g = json.get_string_member ("group");
+            if (g != "") this.groups.add (g);
+        }
+
         if (json.has_member ("priceHint")) {
             this.precision = (int) json.get_int_member ("priceHint");
         }
@@ -252,6 +269,13 @@ public class Markets.Symbol : Object {
 
         builder.set_member_name ("marketState");
         builder.add_string_value (this.market_state);
+
+        builder.set_member_name ("groups");
+        builder.begin_array ();
+        foreach (string group in this.groups) {
+            builder.add_string_value (group);
+        }
+        builder.end_array ();
 
         builder.set_member_name ("currency");
         builder.add_string_value (this.currency);

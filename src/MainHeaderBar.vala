@@ -13,6 +13,9 @@ public class Markets.MainHeaderBar : Gtk.Widget {
     public unowned Gtk.ToggleButton search_button;
 
     [GtkChild]
+    private unowned Gtk.MenuButton filter_button;
+
+    [GtkChild]
     private unowned Gtk.Spinner spinner;
 
     public MainHeaderBar (MainWindow window, State state) {
@@ -22,10 +25,32 @@ public class Markets.MainHeaderBar : Gtk.Widget {
 
         this.state.notify["network-status"].connect (this.on_network_status_updated);
         
-        // Listen to search bar state changes (e.g. if closed via key) is hard from here without direct access to search bar.
-        // But we can listen to filter-query clearing? 
-        // Or MainWindow can toggle this button?
-        // Simpler: MainWindow has the search bar. We just toggle it here.
+        this.state.notify["groups"].connect (this.update_filter_menu);
+        this.state.notify["current-group"].connect (this.update_filter_menu);
+        this.update_filter_menu ();
+    }
+
+    private void update_filter_menu () {
+        var menu = new GLib.Menu ();
+        
+        var section_filter = new GLib.Menu ();
+        section_filter.append (_("All"), "win.set-group('')");
+        
+        foreach (string group in this.state.groups) {
+             section_filter.append (group, @"win.set-group('$group')");
+        }
+        menu.append_section (null, section_filter);
+        
+        var section_manage = new GLib.Menu ();
+        section_manage.append (_("Create Group..."), "win.create-group");
+        
+        if (this.state.current_group != "") {
+            section_manage.append (_("Delete Group"), "win.delete-group");
+        }
+        
+        menu.append_section (null, section_manage);
+        
+        this.filter_button.menu_model = menu;
     }
 
     [GtkCallback]

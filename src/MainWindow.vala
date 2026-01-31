@@ -136,6 +136,76 @@ public class Markets.MainWindow : Adw.ApplicationWindow {
         });
         this.add_action (open_yahoo_action);
         this.application.set_accels_for_action ("win.open-yahoo", {"<Control>O"});
+
+        // Group Actions
+        var set_group_action = new SimpleAction.stateful ("set-group", new VariantType ("s"), new Variant.string (""));
+        set_group_action.activate.connect ((action, parameter) => {
+            action.change_state (parameter);
+        });
+        set_group_action.change_state.connect ((action, parameter) => {
+            string group_name = parameter.get_string ();
+            this.state.current_group = group_name;
+            action.set_state (parameter);
+        });
+        this.add_action (set_group_action);
+        
+        // Sync state to action
+        this.state.notify["current-group"].connect (() => {
+             var action = this.lookup_action ("set-group") as SimpleAction;
+             if (action != null) {
+                 action.set_state (new Variant.string (this.state.current_group));
+             }
+        });
+
+        var create_group_action = new SimpleAction ("create-group", null);
+        create_group_action.activate.connect (() => {
+             var entry = new Gtk.Entry ();
+             entry.placeholder_text = _("Group Name");
+             entry.activates_default = true;
+
+             var dialog = new Adw.MessageDialog (this, _("Create Group"), _("Enter the name of the new group."));
+             dialog.add_response ("cancel", _("Cancel"));
+             dialog.add_response ("create", _("Create"));
+             dialog.set_response_appearance ("create", Adw.ResponseAppearance.SUGGESTED);
+             dialog.set_default_response ("create");
+             dialog.set_close_response ("cancel");
+             
+             dialog.set_extra_child (entry);
+             
+             dialog.response.connect ((response) => {
+                 if (response == "create") {
+                     string name = entry.text.strip ();
+                     if (name != "") {
+                         this.state.create_group (name);
+                     }
+                 }
+             });
+             
+             dialog.present ();
+        });
+        this.add_action (create_group_action);
+
+        var delete_group_action = new SimpleAction ("delete-group", null);
+        delete_group_action.activate.connect (() => {
+             string group = this.state.current_group;
+             if (group == "") return;
+
+             var dialog = new Adw.MessageDialog (this, _("Delete Group"), _("Are you sure you want to delete the group '%s'? Symbols will remain in your list.").printf (group));
+             dialog.add_response ("cancel", _("Cancel"));
+             dialog.add_response ("delete", _("Delete"));
+             dialog.set_response_appearance ("delete", Adw.ResponseAppearance.DESTRUCTIVE);
+             dialog.set_default_response ("cancel");
+             dialog.set_close_response ("cancel");
+             
+             dialog.response.connect ((response) => {
+                 if (response == "delete") {
+                     this.state.delete_group (group);
+                 }
+             });
+             
+             dialog.present ();
+        });
+        this.add_action (delete_group_action);
     }
 
     [GtkCallback]

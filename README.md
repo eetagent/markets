@@ -26,6 +26,7 @@ The Markets application delivers financial data to your fingertips. Track stocks
 * Stock price history charts
 * Search for symbols
 * Detail view with key statistics
+* Group symbols into categories
 * Adjust the refresh rate
 * Dark Mode
 

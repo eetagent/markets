@@ -55,6 +55,14 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
         this.setup_context_menu ();
     }
 
+    public override void dispose () {
+        if (this.context_menu != null) {
+            this.context_menu.unparent ();
+            this.context_menu = null;
+        }
+        base.dispose ();
+    }
+
     private void setup_dnd () {
         // Drag Source
         var source = new Gtk.DragSource ();
@@ -99,30 +107,61 @@ public class Markets.SymbolRow : Gtk.ListBoxRow {
     }
 
     private void setup_context_menu () {
-        var menu = new Menu ();
-        menu.append (_("Open in Yahoo Finance"), "row.open-yahoo");
-
-        this.context_menu = new Gtk.PopoverMenu.from_model (menu);
-        this.context_menu.set_parent (this);
-        this.context_menu.has_arrow = false;
-
         var action_group = new SimpleActionGroup ();
+        
         var open_yahoo_action = new SimpleAction ("open-yahoo", null);
         open_yahoo_action.activate.connect (() => {
             this.state.link = this.symbol.link;
         });
         action_group.add_action (open_yahoo_action);
+
+        var toggle_group_action = new SimpleAction ("toggle-group", new VariantType ("s"));
+        toggle_group_action.activate.connect ((action, parameter) => {
+            string group = parameter.get_string ();
+            if (this.symbol.groups.contains (group)) {
+                this.symbol.groups.remove (group);
+            } else {
+                this.symbol.groups.add (group);
+            }
+            this.state.notify_property ("symbols");
+        });
+        action_group.add_action (toggle_group_action);
+
         this.insert_action_group ("row", action_group);
 
         var right_click = new Gtk.GestureClick ();
         right_click.button = Gdk.BUTTON_SECONDARY;
-        right_click.pressed.connect ((n_press, x, y) => {
-            if (this.context_menu != null) {
-                this.context_menu.set_pointing_to ({ (int)x, (int)y, 1, 1 });
-                this.context_menu.popup ();
-            }
-        });
+        right_click.pressed.connect (this.on_right_click);
         this.add_controller (right_click);
+    }
+
+    private void on_right_click (Gtk.GestureClick gesture, int n_press, double x, double y) {
+        var menu = new Menu ();
+        menu.append (_("Open in Yahoo Finance"), "row.open-yahoo");
+
+        if (this.state.groups.size > 0) {
+            var group_section = new Menu ();
+            foreach (string group in this.state.groups) {
+                // Add checkmark to label if symbol is in this group
+                string label = group;
+                if (this.symbol.groups.contains (group)) {
+                    label = "✓ " + group;
+                }
+                group_section.append (label, @"row.toggle-group('$group')");
+            }
+            menu.append_section (_("Groups"), group_section);
+        }
+
+        if (this.context_menu == null) {
+            this.context_menu = new Gtk.PopoverMenu.from_model (menu);
+            this.context_menu.set_parent (this);
+            this.context_menu.has_arrow = false;
+        } else {
+            this.context_menu.set_menu_model (menu);
+        }
+
+        this.context_menu.set_pointing_to ({ (int)x, (int)y, 1, 1 });
+        this.context_menu.popup ();
     }
 
     private void on_symbol_update () {

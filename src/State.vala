@@ -65,6 +65,49 @@ public class Markets.State : Object {
         get; set; default = new Gee.ArrayList<Symbol> ();
     }
 
+    public Gee.ArrayList<string> groups {
+        get; set; default = new Gee.ArrayList<string> ();
+    }
+
+    public string current_group {
+        get; set; default = "";
+    }
+
+    public void create_group (string name) {
+        if (!this.groups.contains (name)) {
+            var copy = new Gee.ArrayList<string> ();
+            copy.add_all (this.groups);
+            copy.add (name);
+            copy.sort ();
+            this.groups = copy;
+        }
+    }
+
+    public void delete_group (string name) {
+        if (this.groups.contains (name)) {
+            var copy = new Gee.ArrayList<string> ();
+            copy.add_all (this.groups);
+            copy.remove (name);
+            this.groups = copy;
+
+            bool symbols_changed = false;
+            foreach (var symbol in this.symbols) {
+                if (symbol.groups.contains (name)) {
+                    symbol.groups.remove (name);
+                    symbols_changed = true;
+                }
+            }
+
+            if (this.current_group == name) {
+                this.current_group = "";
+            }
+
+            if (symbols_changed) {
+                this.notify_property ("symbols");
+            }
+        }
+    }
+
     public void add_symbol (Symbol new_symbol) {
         var found = this.find_symbol (new_symbol.id);
         if (found != null) {

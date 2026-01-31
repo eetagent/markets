@@ -32,6 +32,7 @@
             <property name="icon_name">list-add-symbolic</property>
           </object>
         </child>
+
         <child type="start">
           <object class="GtkToggleButton" id="search_button">
             <property name="valign">center</property>
@@ -44,6 +45,13 @@
             <property name="valign">center</property>
             <signal name="clicked" handler="on_select_clicked" swapped="no"/>
             <property name="icon_name">object-select-symbolic</property>
+          </object>
+        </child>
+        <child type="start">
+          <object class="GtkMenuButton" id="filter_button">
+            <property name="valign">center</property>
+            <property name="icon_name">folder-symbolic</property>
+            <property name="tooltip_text" translatable="yes">Groups</property>
           </object>
         </child>
         <child type="end">
